@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google-site-verification" content="tHNEOql8luhO54tXMAW7nu7ucfmxyuO54HFDKb9B82o" />
+    <title>AMGODE - مركز الأدوات الاحترافي الشامل</title>
+    <!-- Suppress Cross-Origin Script Errors (e.g. from blocked/delayed ad scripts) -->
+    <script>
+      (function() {
+        var isThirdPartyOrAdError = function(message, source) {
+          var msg = (message || "").toLowerCase();
+          var src = (source || "").toLowerCase();
+          
+          // Silence any "Script error." or empty error messages (typical of cross-origin/ad failures)
+          if (msg.indexOf('script error') !== -1 || msg === 'script error' || !msg || msg === 'undefined') {
+            // Do not silence our own application code errors if they have local sources
+            var isLocalSource = src.indexOf('main.tsx') !== -1 || 
+                                src.indexOf('app.tsx') !== -1 || 
+                                src.indexOf('localhost') !== -1 || 
+                                src.indexOf('run.app') !== -1 ||
+                                src.indexOf('src/') !== -1;
+            if (isLocalSource) {
+              return false;
+            }
+            return true;
+          }
+          
+          if (src.indexOf('effectivecpmnetwork') !== -1 || 
+              src.indexOf('highperformanceformat') !== -1 || 
+              src.indexOf('adsterra') !== -1) {
+            return true;
+          }
+          
+          return false;
+        };
+
+        // 1. Intercept setting window.onerror so we can filter errors before they reach parent wrappers
+        var userOnError = null;
+        Object.defineProperty(window, 'onerror', {
+          get: function() {
+            return userOnError;
+          },
+          set: function(fn) {
+            if (typeof fn === 'function') {
+              userOnError = function(message, source, lineno, colno, error) {
+                if (isThirdPartyOrAdError(message, source)) {
+                  console.warn('Silenced cross-origin error in dynamically assigned window.onerror:', message, 'at', source);
+                  return true; // prevent default
+                }
+                return fn.apply(this, arguments);
+              };
+            } else {
+              userOnError = fn;
+            }
+          },
+          configurable: true,
+          enumerable: true
+        });
+
+        // 2. Intercept window.addEventListener to wrap any registered 'error' or 'unhandledrejection' listeners
+        var originalAddEventListener = window.addEventListener;
+        window.addEventListener = function(type, listener, options) {
+          if (type === 'error' || type === 'unhandledrejection') {
+            var wrappedListener = function(e) {
+              var msg = e.message || (e.reason && e.reason.message) || '';
+              var src = e.filename || (e.reason && e.reason.stack) || '';
+              if (isThirdPartyOrAdError(msg, src)) {
+                console.warn('Intercepted and silenced cross-origin error in event listener:', msg);
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                return;
+              }
+              if (typeof listener === 'function') {
+                return listener.call(this, e);
+              } else if (listener && typeof listener.handleEvent === 'function') {
+                return listener.handleEvent(e);
+              }
+            };
+            return originalAddEventListener.call(window, type, wrappedListener, options);
+          }
+          return originalAddEventListener.apply(window, arguments);
+        };
+
+        // 3. Early direct event listeners to catch events before propagation
+        originalAddEventListener.call(window, 'error', function(e) {
+          var target = e.target;
+          if (target && (target.tagName === 'SCRIPT' || target.tagName === 'IFRAME')) {
+            var src = target.src || target.href || '';
+            if (src.indexOf('effectivecpmnetwork') !== -1 || src.indexOf('highperformanceformat') !== -1) {
+              console.warn('Silenced resource load failure for ad element:', src);
+              e.stopImmediatePropagation();
+              e.preventDefault();
+              return;
+            }
+          }
+          
+          if (isThirdPartyOrAdError(e.message, e.filename)) {
+            console.warn('Silenced global error event:', e.message, 'at', e.filename);
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+
+        originalAddEventListener.call(window, 'unhandledrejection', function(e) {
+          var reason = e.reason;
+          var msg = reason ? (reason.message || '') : '';
+          var stack = reason ? (reason.stack || '') : '';
+          if (isThirdPartyOrAdError(msg, stack)) {
+            console.warn('Silenced global unhandledrejection:', msg);
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        }, true);
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-950 text-gray-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ========================================== -->
+    <!-- Adsterra Global & Banner Script Placements -->
+    <!-- Moved to the very end of <body> with defer -->
+    <!-- ========================================== -->
+
+    <!-- Global Script A -->
+    <script src="https://pl30359717.effectivecpmnetwork.com/c4/31/63/c4316372c8567a6433f2d161d7bdb6fc.js" defer></script>
+    
+    <!-- Global Script B -->
+    <script src="https://pl30359719.effectivecpmnetwork.com/a8/16/70/a81670e91dfbd7cb12338ee7adb6b375.js" defer></script>
+
+    <!-- Native Ad Script -->
+    <script async="async" data-cfasync="false" src="https://pl30359720.effectivecpmnetwork.com/5e7a36afe05855d3c1f48201e692297b/invoke.js" defer></script>
+
+    <!-- Dynamic Conflict-Free Ad Placement Loader -->
+    <script defer>
+      window.addEventListener('DOMContentLoaded', function() {
+        console.log("Core JS loaded. Monitoring DOM for ad placeholders...");
+        var hasLoadedAds = false;
+        
+        var interval = setInterval(function() {
+          // Check for any of our placeholder containers rendered by React
+          var headerDesktop = document.getElementById('ad-container-9427c55437641048ad07b44bcdd0fcf4');
+          var headerMobile = document.getElementById('ad-container-e762581ec23103e4b00cc13f38417fb5');
+          var sidebar300 = document.getElementById('ad-container-d9ee6f54b1b0dc88cc20e64a263f4e38');
+          var sidebar160 = document.getElementById('ad-container-e216fb1925be6800df62efe462659566');
+          var banner468 = document.getElementById('ad-container-ca9630c8be0c8d33ba37f28fd19df7d7');
+          var nativeAd = document.getElementById('container-5e7a36afe05855d3c1f48201e692297b');
+
+          if (headerDesktop || headerMobile || sidebar300 || sidebar160 || banner468 || nativeAd) {
+            clearInterval(interval);
+            if (hasLoadedAds) return;
+            hasLoadedAds = true;
+            
+            console.log("React app mounted successfully. Injecting deferred Adsterra banner scripts...");
+
+            // 1. 728x90 Header Desktop Ad
+            if (headerDesktop) {
+              var sOpt = document.createElement('script');
+              sOpt.innerHTML = "atOptions = { 'key' : '9427c55437641048ad07b44bcdd0fcf4', 'format' : 'iframe', 'height' : 90, 'width' : 728, 'params' : {} };";
+              sOpt.defer = true;
+              var sInv = document.createElement('script');
+              sInv.src = "https://www.highperformanceformat.com/9427c55437641048ad07b44bcdd0fcf4/invoke.js";
+              sInv.defer = true;
+              headerDesktop.appendChild(sOpt);
+              headerDesktop.appendChild(sInv);
+            }
+
+            // 2. 320x50 Header Mobile Ad
+            if (headerMobile) {
+              var sOpt = document.createElement('script');
+              sOpt.innerHTML = "atOptions = { 'key' : 'e762581ec23103e4b00cc13f38417fb5', 'format' : 'iframe', 'height' : 50, 'width' : 320, 'params' : {} };";
+              sOpt.defer = true;
+              var sInv = document.createElement('script');
+              sInv.src = "https://www.highperformanceformat.com/e762581ec23103e4b00cc13f38417fb5/invoke.js";
+              sInv.defer = true;
+              headerMobile.appendChild(sOpt);
+              headerMobile.appendChild(sInv);
+            }
+
+            // 3. 300x250 Sidebar Desktop Ad
+            if (sidebar300) {
+              var sOpt = document.createElement('script');
+              sOpt.innerHTML = "atOptions = { 'key' : 'd9ee6f54b1b0dc88cc20e64a263f4e38', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };";
+              sOpt.defer = true;
+              var sInv = document.createElement('script');
+              sInv.src = "https://www.highperformanceformat.com/d9ee6f54b1b0dc88cc20e64a263f4e38/invoke.js";
+              sInv.defer = true;
+              sidebar300.appendChild(sOpt);
+              sidebar300.appendChild(sInv);
+            }
+
+            // 4. 160x600 Sidebar Desktop Ad
+            if (sidebar160) {
+              var sOpt = document.createElement('script');
+              sOpt.innerHTML = "atOptions = { 'key' : 'e216fb1925be6800df62efe462659566', 'format' : 'iframe', 'height' : 600, 'width' : 160, 'params' : {} };";
+              sOpt.defer = true;
+              var sInv = document.createElement('script');
+              sInv.src = "https://www.highperformanceformat.com/e216fb1925be6800df62efe462659566/invoke.js";
+              sInv.defer = true;
+              sidebar160.appendChild(sOpt);
+              sidebar160.appendChild(sInv);
+            }
+
+            // 5. 468x60 Mobile Header Banner
+            if (banner468) {
+              var sOpt = document.createElement('script');
+              sOpt.innerHTML = "atOptions = { 'key' : 'ca9630c8be0c8d33ba37f28fd19df7d7', 'format' : 'iframe', 'height' : 60, 'width' : 468, 'params' : {} };";
+              sOpt.defer = true;
+              var sInv = document.createElement('script');
+              sInv.src = "https://www.highperformanceformat.com/ca9630c8be0c8d33ba37f28fd19df7d7/invoke.js";
+              sInv.defer = true;
+              banner468.appendChild(sOpt);
+              banner468.appendChild(sInv);
+            }
+          }
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
