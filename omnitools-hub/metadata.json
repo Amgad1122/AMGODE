@@ -1,6 +1,0 @@
-{
-  "name": "AMGODE",
-  "description": "100 Free Professional Tools for Creators, Devs & Finance",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
